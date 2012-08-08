@@ -24,3 +24,6 @@ from gridfill import poisson_fill
 # Define the objects to be imported by imports of the form from fill import *.
 __all__ = ['poisson_fill']
 
+# Define a version string.
+__version__ = '0.1'
+
