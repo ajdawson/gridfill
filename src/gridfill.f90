@@ -267,6 +267,12 @@ subroutine poisson_fill (nlat, nlon, grid, missing, itermax, tolerance, &
     ! mask=1 where a point is missing and mask=0 where a point is not
     ! missing.
     call initialize_missing(nlat, nlon, grid, missing, initzonal, mask)
+    if (sum(mask) .eq. 0) then
+        ! No missing elements so we can return now.
+        resmax = 0.0
+        numiter = 0
+        return
+    endif
     
     ! Initialize the iteration counter to zero.
     numiter = 0
