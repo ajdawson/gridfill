@@ -1,0 +1,23 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module gridfill_f ! in 
+    interface  ! in :gridfill_f
+        subroutine poisson_fill(nlat,nlon,grid,missing,itermax,tolerance,relaxc,initzonal,cyclic,resmax,numiter) ! in :gridfill_f:gridfill.f90
+            integer, optional,intent(hide),check(shape(grid,0)==nlat),depend(grid) :: nlat=shape(grid,0)
+            integer, optional,intent(hide),check(shape(grid,1)==nlon),depend(grid) :: nlon=shape(grid,1)
+            real(kind=8) dimension(nlat,nlon),intent(in,out) :: grid
+            real(kind=8) intent(in) :: missing
+            integer intent(in) :: itermax
+            real(kind=8) intent(in) :: tolerance
+            real(kind=8) intent(in) :: relaxc
+            logical intent(in) :: initzonal
+            logical intent(in) :: cyclic
+            real(kind=8) intent(out) :: resmax
+            integer intent(out) :: numiter
+        end subroutine poisson_fill
+    end interface 
+end python module gridfill_f
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
