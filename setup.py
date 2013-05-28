@@ -16,5 +16,5 @@ if __name__ == '__main__':
           author_email='dawson _at_ atm.ox.ac.uk',
           ext_modules=[fext],
           packages=['gridfill'],
-          package_dir={'gridfill': 'lib'},)
+          package_dir={'': 'lib'},)
 
