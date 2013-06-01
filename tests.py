@@ -1,5 +1,5 @@
-"""Fill missing values in a grid."""
-# Copyright (c) 2012-2013 Andrew Dawson
+"""Run the `gridfill` test suite."""
+# Copyright (c) 2013 Andrew Dawson
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -18,14 +18,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from __future__ import absolute_import
-
-from .gridfill import fill
+import nose
 
 
-# Define a version string.
-__version__ = '0.2.x'
+#: Test modules to run by default.
+default_test_modules = [
+    'gridfill.tests.test_fill',
+]
 
-# Define the objects to be imported by imports of the form:
-#   from gridfill import *
-__all__ = ['fill']
+
+def run():
+    """Run the `gridfill` tests."""
+    nose.main(defaultTest=default_test_modules)
+
+
+if __name__ == '__main__':
+    run()
