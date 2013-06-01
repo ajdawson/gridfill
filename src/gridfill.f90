@@ -5,7 +5,10 @@
 ! Provided is a subroutine for filling missing values in a grid using an
 ! iterative relaxation scheme, and supporting subroutines.
 !
-! Copyright (c) 2012 Andrew Dawson
+! License
+! =======
+!
+! Copyright (c) 2012-2013 Andrew Dawson
 ! 
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +27,6 @@
 ! LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ! OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ! THE SOFTWARE.
-
 
 
 subroutine initialize_missing(nlat, nlon, grid, missing, initzonal, mask)
@@ -332,3 +334,97 @@ subroutine poisson_fill (nlat, nlon, grid, missing, itermax, tolerance, &
     return
 end subroutine poisson_fill
 
+
+subroutine poisson_fill_grids(nlat, nlon, ng, grid, missing, itermax, &
+                              tolerance, relaxc, initzonal, cyclic, resmax, &
+                              numiter)
+    implicit none
+!
+! Calling arguments:
+    integer,                                 intent(in)    :: nlat
+    integer,                                 intent(in)    :: nlon
+    integer,                                 intent(in)    :: ng
+    real(kind=8), dimension(nlat, nlon, ng), intent(inout) :: grid
+    real(kind=8),                            intent(in)    :: missing
+    integer,                                 intent(in)    :: itermax
+    real(kind=8),                            intent(in)    :: tolerance
+    real(kind=8),                            intent(in)    :: relaxc
+    logical,                                 intent(in)    :: initzonal
+    logical,                                 intent(in)    :: cyclic
+    real(kind=8),                            intent(out)   :: resmax
+    integer,                                 intent(out)   :: numiter
+!
+! f2py directives
+    !f2py intent(in,out) :: grid
+    !f2py intent(hide)   :: nlat, nlon, ng
+!
+! Purpose
+! =======
+!
+! Fill missing values in multiple grids by iteratively solving Poisson's
+! equation.
+!
+!
+! Arguments
+! =========
+!
+! nlat         (input) integer
+!              Number of latitudes in the input grid.
+!
+! nlon         (input) integer
+!              Number of longitudes in the input grid.
+!
+! ng           (input) integer
+!              Number of latitude-longitude grids in the input.
+!
+! grid         (input,output) real(kind=8) dimension(nlat, nlon, ng)
+!              A grid with missing values.
+!
+! missing      (input) real(kind=8)
+!              The missing value in the input grid.
+!
+! itermax      (input) integer
+!              The maximum number of iterations allowed for the
+!              relaxation scheme.
+!
+! tolerance    (input) real(kind=8)
+!              Tolerance for convergence of the relaxation scheme.
+!
+! relaxc       (input) real(kind=8)
+!              Relaxation constant, typically 0.45 <= relaxc <= 0.6.
+!
+! initzonal    (input) logical
+!              Specifies the initial guess used for the missing values:
+!                  = .TRUE. : use the zonal mean as the initial guess
+!                  = .FALSE.: use zero as the initial guess
+!
+! cyclic       (input) logical
+!              Specifies whether or not the input grid is cyclic in its
+!              second dimension:
+!                  = .FALSE.: grid is not cyclic
+!                  = .TRUE. : grid is cyclic
+!
+! resmax       (output) real(kind=8)
+!              Maximum residual at the end of the iterative scheme.
+!
+! numiter      (output) integer
+!              The number of iterations used to achieve the solution.
+!
+!
+! Author
+! ======
+!
+! Andrew Dawson <dawson _at_ atm.ox.ac.uk>
+!
+    ! Local variable declarations
+    integer :: i
+
+    ! Fill each grid
+    grid_loop: do i = 1, ng
+        call poisson_fill (nlat, nlon, grid(:, :, i), missing, itermax, &
+                           tolerance, relaxc, initzonal, cyclic, resmax, &
+                           numiter)
+    end do grid_loop
+
+    return
+end subroutine poisson_fill_grids
