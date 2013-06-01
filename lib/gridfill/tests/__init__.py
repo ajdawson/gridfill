@@ -1,5 +1,4 @@
-"""Fill missing values in a grid."""
-# Copyright (c) 2012-2013 Andrew Dawson
+# Copyright (c) 2013 Andrew Dawson
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -18,14 +17,3 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from __future__ import absolute_import
-
-from .gridfill import fill
-
-
-# Define a version string.
-__version__ = '0.2.x'
-
-# Define the objects to be imported by imports of the form:
-#   from gridfill import *
-__all__ = ['fill']
