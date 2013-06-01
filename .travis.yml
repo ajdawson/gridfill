@@ -1,0 +1,16 @@
+language: python
+
+python:
+  - "2.7"
+
+install:
+
+  - sudo apt-get install gfortran
+  - pip install numpy
+  - python setup.py build_ext --inplace
+
+script:
+  - python tests.py --verbosity=2
+
+notifications:
+  email: false
