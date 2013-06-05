@@ -351,8 +351,8 @@ subroutine poisson_fill_grids(nlat, nlon, ng, grid, missing, itermax, &
     real(kind=8),                            intent(in)    :: relaxc
     logical,                                 intent(in)    :: initzonal
     logical,                                 intent(in)    :: cyclic
-    real(kind=8),                            intent(out)   :: resmax
-    integer,                                 intent(out)   :: numiter
+    real(kind=8), dimension(ng),             intent(out)   :: resmax
+    integer, dimension(ng),                  intent(out)   :: numiter
 !
 ! f2py directives
     !f2py intent(in,out) :: grid
@@ -404,11 +404,13 @@ subroutine poisson_fill_grids(nlat, nlon, ng, grid, missing, itermax, &
 !                  = .FALSE.: grid is not cyclic
 !                  = .TRUE. : grid is cyclic
 !
-! resmax       (output) real(kind=8)
-!              Maximum residual at the end of the iterative scheme.
+! resmax       (output) real(kind=8) dimension(ng)
+!              Maximum residual at the end of the iterative scheme for
+!              each grid.
 !
-! numiter      (output) integer
-!              The number of iterations used to achieve the solution.
+! numiter      (output) integer dimension(ng)
+!              The number of iterations used to achieve the solution for
+!              each grid.
 !
 !
 ! Author
@@ -422,8 +424,8 @@ subroutine poisson_fill_grids(nlat, nlon, ng, grid, missing, itermax, &
     ! Fill each grid
     grid_loop: do i = 1, ng
         call poisson_fill (nlat, nlon, grid(:, :, i), missing, itermax, &
-                           tolerance, relaxc, initzonal, cyclic, resmax, &
-                           numiter)
+                           tolerance, relaxc, initzonal, cyclic, resmax(i), &
+                           numiter(i))
     end do grid_loop
 
     return
