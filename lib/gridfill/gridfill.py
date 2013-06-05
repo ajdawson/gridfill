@@ -115,16 +115,18 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
     # call the computation subroutine:
     fgrids, resmax, niter = _poisson_fill_grids(grids, fill_value, itermax, eps,
                                                relax, initzonal, cyclic)
-    converged = not (niter == itermax and resmax > eps)
     fgrids = _recover_data(fgrids, info)
+    converged = np.logical_not(resmax > eps)
     # optional performance information:
     if verbose:
-        if converged:
-            converged_string = 'converged'
-        else:
-            converged_string = 'did not converge'
-        print('relaxation {:s} ({:d} iterations '
-              'with maximum residual {:.3e})'.format(converged_string,
-                                                     niter,
-                                                     resmax))
+        for i, c in enumerate(converged):
+            if c:
+                converged_string = 'converged'
+            else:
+                converged_string = 'did not converge'
+            print('[{:d}] relaxation {:s} ({:d} iterations '
+                  'with maximum residual {:.3e})'.format(i,
+                                                         converged_string,
+                                                         int(niter[i]),
+                                                         resmax[i]))
     return fgrids, converged

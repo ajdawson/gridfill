@@ -14,8 +14,8 @@ python module gridfill_f ! in
             real(kind=8) intent(in) :: relaxc
             logical intent(in) :: initzonal
             logical intent(in) :: cyclic
-            real(kind=8) intent(out) :: resmax
-            integer intent(out) :: numiter
+            real(kind=8) dimension(ng),intent(out),depend(ng) :: resmax
+            integer dimension(ng),intent(out),depend(ng) :: numiter
         end subroutine poisson_fill_grids
     end interface 
 end python module gridfill_f
