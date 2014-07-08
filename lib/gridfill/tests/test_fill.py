@@ -83,6 +83,17 @@ class GridFillTest(object):
         np.testing.assert_array_almost_equal(a, b)
 
 
+class TestFloat32(GridFillTest):
+    """Test with 32-bit float input."""
+    cyclic = False
+    initzonal = False
+
+    @classmethod
+    def setup_class(cls):
+        cls.grid, cls.soln = reference_solution(cls.cyclic, cls.initzonal)
+        cls.grid = cls.grid.astype(np.float32)
+
+
 class TestFillNonCyclicInitZero(GridFillTest):
     """Non-cyclic, initialized with zeros."""
     cyclic = False
