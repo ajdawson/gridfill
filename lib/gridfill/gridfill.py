@@ -28,7 +28,7 @@ from gridfill_f import poisson_fill_grids as _poisson_fill_grids
 
 
 def _order_dims(grid, xpos, ypos):
-    outorder = range(grid.ndim)
+    outorder = list(range(grid.ndim))
     try:
         outorder.remove(xpos)
         outorder.remove(ypos)
