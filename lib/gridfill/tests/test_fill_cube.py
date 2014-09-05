@@ -1,5 +1,5 @@
-"""Test the `fill_cube` functio from the `gridfill` package."""
-# Copyright (c) 2013 Andrew Dawson
+"""Test the `fill_cube` function from the `gridfill` package."""
+# Copyright (c) 2014 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -60,20 +60,20 @@ class CubeFillTest(object):
     def test_single_grid(self):
         filled = fill_cube(self.cube[0], self.eps, relax=self.relax,
                            itermax=self.itermax, initzonal=self.initzonal,
-                           cyclic=self.cyclic, verbose=False)
+                           verbose=False)
         self.assert_array_almost_equal(filled.data, self.soln[0])
 
     def test_multi_grid(self):
         filled = fill_cube(self.cube, self.eps, relax=self.relax,
                            itermax=self.itermax, initzonal=self.initzonal,
-                           cyclic=self.cyclic, verbose=False)
+                           verbose=False)
         self.assert_array_almost_equal(filled.data, self.soln)
 
     def test_multi_grid_inplace(self):
         cube = self.cube.copy()
         filled = fill_cube(cube, self.eps, relax=self.relax,
                            itermax=self.itermax, initzonal=self.initzonal,
-                           cyclic=self.cyclic, verbose=False, copy=False)
+                           verbose=False, inplace=True)
         self.assert_array_almost_equal(filled.data, self.soln)
         self.assert_array_almost_equal(filled.data, cube.data)
         assert not hasattr(filled.data, 'mask')
@@ -83,15 +83,14 @@ class CubeFillTest(object):
     def test_not_masked(self):
         cube = self.cube.copy(data=self.cube.data.filled(fill_value=np.nan))
         fill_cube(cube, self.eps, relax=self.relax, itermax=self.itermax,
-                  initzonal=self.initzonal, cyclic=self.cyclic, verbose=False)
+                  initzonal=self.initzonal, verbose=False)
 
     def test_not_converged_warning(self):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")  # always trigger all warnings
             fill_cube(self.cube, self.eps / 1E7, relax=self.relax,
                       itermax=self.itermax, initzonal=self.initzonal,
-                      cyclic=self.cyclic, verbose=False)
-            print(w[-1].message)
+                      verbose=False)
             assert str(w[-1].message) == ("gridfill did not converge on 3 out "
                                           "of 3 slices")
             assert issubclass(w[-1].category, UserWarning)
@@ -103,7 +102,6 @@ class CubeFillTest(object):
                                              relax=self.relax,
                                              itermax=self.itermax,
                                              initzonal=self.initzonal,
-                                             cyclic=self.cyclic,
                                              full_output=True, verbose=False)
         self.assert_array_almost_equal(notconverged, np.ones(3, dtype=bool))
 

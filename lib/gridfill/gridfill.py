@@ -1,5 +1,5 @@
 """Define a procedure for filling missing values."""
-# Copyright (c) 2012-2013 Andrew Dawson
+# Copyright (c) 2012-2014 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -115,7 +115,6 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
         grids = grids.filled(fill_value=fill_value)
     except AttributeError:
         raise TypeError('grids must be a masked array')
-    #raise ValueError(grids)
     # call the computation subroutine:
     fgrids, resmax, niter = _poisson_fill_grids(grids, fill_value, itermax,
                                                 eps, relax, initzonal, cyclic)
@@ -137,9 +136,8 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
 
 
 def fill_cube(cube, eps, relax=.6, itermax=100, initzonal=False,
-              cyclic=False, full_output=False, verbose=False, copy=True):
-    """
-    Fill missing values in a cube with values derived by solving
+              full_output=False, verbose=False, inplace=False):
+    """Fill missing values in a cube with values derived by solving
     Poisson's equation using a relaxation scheme in the horizontal
     (i.e., x-y-) plane.
 
@@ -177,12 +175,12 @@ def fill_cube(cube, eps, relax=.6, itermax=100, initzonal=False,
         printed to stdout, if *False* nothing is printed. Defaults to
         *False*.
 
-    *copy*
-        If *True*, return a copy, if *False*, modify cube.data in-place
+    *inplace*
+        If *True*, modify cube.data in-place; if *False*, return a
+        copy. Defaults to *False*.
 
     """
     cyclic = cube.coord(axis="x").circular
-    #raise ValueError(cube.data)
     filled_data, cnv = fill(cube.data,
                             cube.coord_dims(cube.coord(axis="x"))[0],
                             cube.coord_dims(cube.coord(axis="y"))[0], eps=eps,
@@ -193,11 +191,11 @@ def fill_cube(cube, eps, relax=.6, itermax=100, initzonal=False,
     if np.any(not_converged):
         warnings.warn("gridfill did not converge on {} out of {} "
                       "slices".format(not_converged.sum(), not_converged.size))
-    if copy:
-        retcube = cube.copy(data=filled_data)
-    else:
+    if inplace:
         cube.data = filled_data
         retcube = cube
+    else:
+        retcube = cube.copy(data=filled_data)
     if full_output:
         return retcube, not_converged
     else:
