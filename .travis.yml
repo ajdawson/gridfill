@@ -4,10 +4,31 @@ python:
   - "2.7"
 
 install:
-
+  # Require a fortran compiler:
   - sudo apt-get install gfortran
-  - pip install numpy
-  - python setup.py build_ext --inplace
+  # Install Miniconda:
+  - if [[ "$TRAVIS_PYTHON_VERSION" == 2* ]]; then
+      wget http://repo.continuum.io/miniconda/Miniconda-3.6.0-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget http://repo.continuum.io/miniconda/Miniconda3-3.6.0-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update conda
+  - conda info -a
+  # Create a test environment:
+  - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION
+  - source activate test-environment
+  - if [[ "$TRAVIS_PYTHON_VERSION" == 2* ]]; then
+      conda config --add channels scitools;
+      conda install numpy iris;
+    else
+      conda install numpy;
+    fi
+  # Install the package:
+  - python setup.py install
 
 script:
   - python tests.py --verbosity=2
