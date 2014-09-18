@@ -17,3 +17,7 @@ dist
 *.pyo
 *.tmp*
 
+
+## Ignore build output
+lib/gridfill_f.so
+src/gridfill_fmodule.c

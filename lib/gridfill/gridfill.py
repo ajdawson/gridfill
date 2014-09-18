@@ -1,16 +1,16 @@
 """Define a procedure for filling missing values."""
-# Copyright (c) 2012-2013 Andrew Dawson
-# 
+# Copyright (c) 2012-2014 Andrew Dawson
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 from __future__ import absolute_import, print_function
+
+import warnings
 
 import numpy as np
 
@@ -83,7 +85,7 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
     **Keyword arguments:**
 
     *relax*
-        Relaxation constant. Usually 0.45 <= *relc* <= 0.6. Defaults to
+        Relaxation constant. Usually 0.45 <= *relax* <= 0.6. Defaults to
         0.6.
 
     *itermax*
@@ -114,8 +116,8 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
     except AttributeError:
         raise TypeError('grids must be a masked array')
     # call the computation subroutine:
-    fgrids, resmax, niter = _poisson_fill_grids(grids, fill_value, itermax, eps,
-                                               relax, initzonal, cyclic)
+    fgrids, resmax, niter = _poisson_fill_grids(grids, fill_value, itermax,
+                                                eps, relax, initzonal, cyclic)
     fgrids = _recover_data(fgrids, info)
     converged = np.logical_not(resmax > eps)
     # optional performance information:
@@ -131,3 +133,70 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
                                                          int(niter[i]),
                                                          resmax[i]))
     return fgrids, converged
+
+
+def fill_cube(cube, eps, relax=.6, itermax=100, initzonal=False,
+              full_output=False, verbose=False, inplace=False):
+    """Fill missing values in a cube with values derived by solving
+    Poisson's equation using a relaxation scheme in the horizontal
+    (i.e., x-y-) plane.
+
+    **Arguments:**
+
+    *cube*
+        The iris.cube.Cube to be filled
+
+    *eps*
+        Tolerance for determining the solution complete.
+
+    **Keyword arguments:**
+
+    *relax*
+        Relaxation constant. Usually 0.45 <= *relax* <= 0.6. Defaults to
+        0.6.
+
+    *itermax*
+        Maximum number of iterations of the relaxation scheme. Defaults
+        to 100 iterations.
+
+    *initzonal*
+        If *False* missing values will be initialized to zero, if *True*
+        missing values will be initialized to the zonal mean. Defaults
+        to *False*.
+
+    *full_output*
+        If *True* this function returns a tuple (filled_cube,
+        not_converged), where not_converged is a boolean array
+        indicating slices where the algorithm did not converge.
+        Defaults to *False*.
+
+    *verbose*
+        If *True* information about algorithm performance will be
+        printed to stdout, if *False* nothing is printed. Defaults to
+        *False*.
+
+    *inplace*
+        If *True*, modify cube.data in-place; if *False*, return a
+        copy. Defaults to *False*.
+
+    """
+    cyclic = cube.coord(axis="x").circular
+    filled_data, cnv = fill(cube.data,
+                            cube.coord_dims(cube.coord(axis="x"))[0],
+                            cube.coord_dims(cube.coord(axis="y"))[0], eps=eps,
+                            itermax=itermax, initzonal=initzonal,
+                            cyclic=cyclic, verbose=verbose)
+
+    not_converged = np.logical_not(cnv)
+    if np.any(not_converged):
+        warnings.warn("gridfill did not converge on {} out of {} "
+                      "slices".format(not_converged.sum(), not_converged.size))
+    if inplace:
+        cube.data = filled_data
+        retcube = cube
+    else:
+        retcube = cube.copy(data=filled_data)
+    if full_output:
+        return retcube, not_converged
+    else:
+        return retcube
