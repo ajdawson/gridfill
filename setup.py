@@ -45,8 +45,13 @@ for line in open('lib/gridfill/__init__.py').readlines():
         exec(line.strip())
 
 # Define packages and package data:
-packages = ['gridfill']
-package_data = {}
+packages = [
+    'gridfill',
+    'gridfill.tests',
+]
+package_data = {
+    'gridfill.tests': ['data/*.npy'],
+}
 
 # Define extension modules:
 ext_modules = [

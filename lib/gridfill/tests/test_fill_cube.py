@@ -20,12 +20,16 @@
 # THE SOFTWARE.
 import warnings
 
-import iris
+from nose import SkipTest
 from nose.tools import raises
+
+try:
+    import iris
+except ImportError:
+    raise SkipTest('Cannot import iris, fill_cube() will not be tested')
 import numpy as np
 
 from gridfill import fill_cube
-
 from .test_fill import reference_solution
 
 

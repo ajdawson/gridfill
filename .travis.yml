@@ -1,15 +1,10 @@
 language: python
 
-addons:
-    apt:
-        packages:
-            - gfortran
-
 sudo: false
 
 env:
     global:
-        - PACKAGES_STANDARD="numpy nose"
+        - PACKAGES_STANDARD="setuptools cython numpy nose"
     matrix:
         - NAME="Python 2.7 (standard)"
           PYTHON_VERSION=2.7
@@ -50,7 +45,9 @@ install:
     - python setup.py install
 
 script:
-    - python tests.py --verbosity=2
+    - mkdir ../test_directory
+    - cd ../test_directory
+    - nosetests gridfill --verbosity=2
 
 notifications:
   email: false
