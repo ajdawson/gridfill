@@ -24,7 +24,7 @@ from .gridfill import fill, fill_cube
 
 
 # Define a version string.
-__version__ = '0.4.x'
+__version__ = '1.0.dev0'
 
 # Define the objects to be imported by imports of the form:
 #   from gridfill import *
