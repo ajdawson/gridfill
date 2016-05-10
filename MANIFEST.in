@@ -1,0 +1,4 @@
+include COPYING
+include README.rst
+recursive-include lib *.py
+recursive-include lib *.pyx

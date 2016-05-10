@@ -40,7 +40,7 @@ install_requires = [
 ]
 
 # Get the library version:
-for line in open('lib/gridfill/__init__.py').readlines():
+for line in open('gridfill/__init__.py').readlines():
     if line.startswith('__version__'):
         exec(line.strip())
 
@@ -58,7 +58,7 @@ ext_modules = [
     #The core implemented as a Cython extension:
     Extension(
         'gridfill._gridfill',
-        ['lib/gridfill/_gridfill.pyx'],
+        ['gridfill/_gridfill.pyx'],
         include_dirs=[np.get_include()],
     ),
 ]
@@ -89,7 +89,6 @@ setup(
     license='MIT',
     install_requires=install_requires,
     packages=packages,
-    package_dir={'': 'lib'},
     package_data=package_data,
     ext_modules=ext_modules,
     cmdclass={'build_ext': build_ext},
