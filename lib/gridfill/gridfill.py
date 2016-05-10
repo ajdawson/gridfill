@@ -1,5 +1,5 @@
 """Define a procedure for filling missing values."""
-# Copyright (c) 2012-2014 Andrew Dawson
+# Copyright (c) 2012-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ import warnings
 
 import numpy as np
 
-from gridfill_f import poisson_fill_grids as _poisson_fill_grids
+from ._gridfill import poisson_fill_grids as _poisson_fill_grids
 
 
 def _order_dims(grid, xpos, ypos):
@@ -112,13 +112,15 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
     # fill missing values:
     fill_value = 1.e20
     try:
+        masks = grids.mask.astype(np.int32)
         grids = grids.filled(fill_value=fill_value)
     except AttributeError:
         raise TypeError('grids must be a masked array')
-    # call the computation subroutine:
-    fgrids, resmax, niter = _poisson_fill_grids(grids, fill_value, itermax,
-                                                eps, relax, initzonal, cyclic)
-    fgrids = _recover_data(fgrids, info)
+    # Call the computation subroutine:
+    niter, resmax = _poisson_fill_grids(grids, masks, relax, eps, itermax,
+                                        1 if cyclic else 0,
+                                        1 if initzonal else 0)
+    grids = _recover_data(grids, info)
     converged = np.logical_not(resmax > eps)
     # optional performance information:
     if verbose:
@@ -132,7 +134,7 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
                                                          converged_string,
                                                          int(niter[i]),
                                                          resmax[i]))
-    return fgrids, converged
+    return grids, converged
 
 
 def fill_cube(cube, eps, relax=.6, itermax=100, initzonal=False,
