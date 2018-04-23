@@ -48,7 +48,7 @@ def _prep_data(grid, xdim, ydim):
     origndim = grid.ndim
     grid, intorder = _order_dims(grid, xdim, ydim)
     intshape = grid.shape
-    grid = grid.reshape(grid.shape[:2] + (np.prod(grid.shape[2:]),))
+    grid = grid.reshape(grid.shape[:2] + (int(np.prod(grid.shape[2:])),))
     info = dict(intshape=intshape, intorder=intorder, origndim=origndim)
     grid = grid.astype(np.float64)
     return grid, info
