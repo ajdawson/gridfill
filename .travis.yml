@@ -12,18 +12,18 @@ env:
         - NAME="Python 2.7 (extras)"
           PYTHON_VERSION=2.7
           PACKAGES="${PACKAGES_STANDARD} iris"
-        - NAME="Python 3.3 (standard)"
-          PYTHON_VERSION=3.3
-          PACKAGES="${PACKAGES_STANDARD}"
-        - NAME="Python 3.4 (standard)"
-          PYTHON_VERSION=3.4
-          PACKAGES="${PACKAGES_STANDARD}"
-        - NAME="Python 3.4 (extras)"
-          PYTHON_VERSION=3.4
-          PACKAGES="${PACKAGES_STANDARD} iris"
         - NAME="Python 3.5 (standard)"
           PYTHON_VERSION=3.5
           PACKAGES="${PACKAGES_STANDARD}"
+        - NAME="Python 3.5 (extras)"
+          PYTHON_VERSION=3.5
+          PACKAGES="${PACKAGES_STANDARD} iris"
+        - NAME="Python 3.6 (standard)"
+          PYTHON_VERSION=3.6
+          PACKAGES="${PACKAGES_STANDARD}"
+        - NAME="Python 3.6 (extras)"
+          PYTHON_VERSION=3.6
+          PACKAGES="${PACKAGES_STANDARD} iris"
 
 install:
     # Install Miniconda so we can use it to manage dependencies:
@@ -33,7 +33,7 @@ install:
     - hash -r
     # Set-up extra channels for dependencies:
     - conda config --set always_yes yes --set changeps1 no
-    - conda config --add channels scitools
+    - conda config --add channels conda-forge
     - conda update conda
     - conda info -a
     # Create a test environment with the required Python version:
