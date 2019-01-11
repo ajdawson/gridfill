@@ -19,5 +19,5 @@ dist
 
 
 ## Ignore build output
-lib/gridfill/_gridfill.c
+gridfill/_gridfill.c
 *.so
