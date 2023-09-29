@@ -33,6 +33,12 @@ gridfill can also operate on `iris` cubes, which requires the iris_
 package to be installed.
 
 
-.. _conda: http://conda.pydata.org
+Developers
+----------
+
+For development the pytest package is required in order to run tests.
+
+
+.. _conda: https://docs.conda.io/en/latest/
 .. _Github: https://github.com/ajdawson/gridfill
-.. _iris: http://scitools.org.uk/iris
+.. _iris: https://scitools-iris.readthedocs.io/en/stable/
