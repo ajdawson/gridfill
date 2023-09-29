@@ -22,7 +22,8 @@ import warnings
 
 import pytest
 try:
-    import iris
+    import iris.coords
+    import iris.cube
 except ImportError:
     pytest.skip('Cannot import iris, fill_cube() will not be tested', allow_module_level=True)
 import numpy as np
