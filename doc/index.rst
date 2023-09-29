@@ -13,7 +13,7 @@ Gridfill
 Gridfill is a Python package for filling in missing values in gridded data.
 Missing values are filled by solving Poisson's equation using an iterative relaxation scheme at the missing values, resulting in a smooth filling.
 
-The core package runs on Python 2 or 3, on Linux and OSX (maybe on Windows too), and requires numpy_.
+The core package runs on Python 3, on Linux and OSX (maybe on Windows too), and requires numpy_.
 Gridfill has an optional interface for working with iris_ cubes.
 
 
@@ -64,10 +64,10 @@ Bug reports and feature requests should be made using the repository issues_ pag
 Pull requests for new features and bug fixes are welcome!
 
 
-.. _numpy: http://www.numpy.org
-.. _iris: http://scitools.org.uk/iris
-.. _conda: http://conda.pydata.org/docs/
-.. _setuptools: https://pypi.python.org/pypi/setuptools
-.. _cython: http://cython.org
-.. _Github: http://github.com/ajdawson/gridfill
-.. _issues: http://github.com/ajdawson/gridfill/issues
+.. _numpy: https://numpy.org
+.. _iris: https://scitools-iris.readthedocs.io/en/stable/
+.. _conda: https://docs.conda.io/en/latest/
+.. _setuptools: https://setuptools.pypa.io/en/latest/
+.. _cython: https://cython.org
+.. _Github: https://github.com/ajdawson/gridfill
+.. _issues: https://github.com/ajdawson/gridfill/issues

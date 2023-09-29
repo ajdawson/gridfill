@@ -39,3 +39,4 @@ gridfill_tests = ["data/*.npy"]
 readme = {file = "README.rst", content-type = "text/x-rst"}
 
 [tool.setuptools_scm]
+version_file = "gridfill/_version.py"
