@@ -1,4 +1,3 @@
-include COPYING
-include README.rst
-recursive-include lib *.py
-recursive-include lib *.pyx
+include COPYING README.rst
+recursive-include gridfill *.py *.pyx *.npy
+recursive-include doc *.py *.rst Makefile
