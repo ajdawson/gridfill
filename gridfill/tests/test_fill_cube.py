@@ -20,13 +20,11 @@
 # THE SOFTWARE.
 import warnings
 
-from nose import SkipTest
-from nose.tools import raises
-
+import pytest
 try:
     import iris
 except ImportError:
-    raise SkipTest('Cannot import iris, fill_cube() will not be tested')
+    pytest.skip('Cannot import iris, fill_cube() will not be tested', allow_module_level=True)
 import numpy as np
 
 from gridfill import fill_cube
@@ -83,11 +81,13 @@ class CubeFillTest(object):
         assert not hasattr(filled.data, 'mask')
         assert not hasattr(cube.data, 'mask')
 
-    @raises(TypeError)
     def test_not_masked(self):
         cube = self.cube.copy(data=self.cube.data.filled(fill_value=np.nan))
-        fill_cube(cube, self.eps, relax=self.relax, itermax=self.itermax,
-                  initzonal=self.initzonal, verbose=False)
+        with pytest.raises(TypeError):
+            fill_cube(
+                cube, self.eps, relax=self.relax, itermax=self.itermax,
+                initzonal=self.initzonal, verbose=False
+            )
 
     def test_not_converged_warning(self):
         with warnings.catch_warnings(record=True) as w:
