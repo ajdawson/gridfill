@@ -18,79 +18,21 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
-import setuptools
 from setuptools import setup, Extension
+from Cython.Build import cythonize
+import numpy as np
 
-
-try:
-    from Cython.Distutils import build_ext
-except ImportError:
-    raise ImportError('Cython 0.15.1+ is required to install gridfill')
-try:
-    import numpy as np
-except ImportError:
-    raise ImportError('NumPy 1.6+ is required to install gridfill')
-
-# Define the required dependencies:
-install_requires = [
-    'numpy>=1.6',
-    'Cython>=0.15.1',
-    'setuptools>=0.7.2',
-]
-
-# Get the library version:
-for line in open('gridfill/__init__.py').readlines():
-    if line.startswith('__version__'):
-        exec(line.strip())
-
-# Define packages and package data:
-packages = [
-    'gridfill',
-    'gridfill.tests',
-]
-package_data = {
-    'gridfill.tests': ['data/*.npy'],
-}
-
-# Define extension modules:
-ext_modules = [
+extensions = [
     #The core implemented as a Cython extension:
     Extension(
         'gridfill._gridfill',
         ['gridfill/_gridfill.pyx'],
         include_dirs=[np.get_include()],
+        define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
     ),
-]
-
-classifiers = [
-    'License :: OSI Approved :: MIT License',
-    'Operating System :: MacOS :: MacOS X',
-    'Operating System :: POSIX :: Linux',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.3',
-    'Programming Language :: Python :: 3.4',
-    'Programming Language :: Python :: 3.5',
-    'Topic :: Scientific/Engineering',
-    'Topic :: Scientific/Engineering :: Mathematics',
-    'Topic :: Scientific/Engineering :: Physics',
-    'Topic :: Scientific/Engineering :: Atmospheric Science',
 ]
 
 setup(
     name='gridfill',
-    version=__version__,
-    author="Andrew Dawson",
-    url='https://github.com/ajdawson/gridfill',
-    description='Fill missing values in grids using iterative relaxation',
-    license='MIT',
-    install_requires=install_requires,
-    packages=packages,
-    package_data=package_data,
-    ext_modules=ext_modules,
-    cmdclass={'build_ext': build_ext},
-    classifiers=classifiers,
+    ext_modules=cythonize(extensions),
 )

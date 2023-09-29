@@ -1,0 +1,41 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+    "setuptools>=60",
+    "setuptools-scm>=8.0",
+    "wheel",
+    "Cython",
+    "numpy",
+]
+
+[project]
+name = "gridfill"
+description = "Fill missing values in grids using iterative relaxation"
+license = {text = "MIT"}
+authors = [{name = "Andrew Dawson"}]
+requires-python = ">=3.8"
+dependencies = ["numpy"]
+dynamic = ["readme", "version"]
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Topic :: Scientific/Engineering',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'Topic :: Scientific/Engineering :: Physics',
+    'Topic :: Scientific/Engineering :: Atmospheric Science',
+]
+
+[tool.setuptools]
+license-files = ["COPYING"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+gridfill_tests = ["data/*.npy"]
+
+[tool.setuptools.dynamic]
+readme = {file = "README.rst", content-type = "text/x-rst"}
+
+[tool.setuptools_scm]
