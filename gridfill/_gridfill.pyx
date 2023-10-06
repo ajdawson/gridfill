@@ -1,4 +1,4 @@
-#cython: boundscheck=False, wraparound=False, initializedcheck=False
+#cython: language_level=3, boundscheck=False, wraparound=False, initializedcheck=False
 """Fill missing values in grids using an iterative relaxation scheme."""
 # Copyright (c) 2016 Andrew Dawson
 #
