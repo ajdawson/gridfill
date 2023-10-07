@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfill API &mdash; gridfill 1.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Gridfill" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            gridfill
+          </a>
+              <div class="version">
+                1.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfill</span></code> API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gridfill.fill"><code class="docutils literal notranslate"><span class="pre">fill()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gridfill.fill_cube"><code class="docutils literal notranslate"><span class="pre">fill_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">gridfill</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfill</span></code> API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-gridfill">
+<span id="gridfill-api"></span><h1><a class="reference internal" href="#module-gridfill" title="gridfill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfill</span></code></a> API<a class="headerlink" href="#module-gridfill" title="Permalink to this heading"></a></h1>
+<p>Fill missing values in a grid.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="gridfill.fill">
+<span class="sig-prename descclassname"><span class="pre">gridfill.</span></span><span class="sig-name descname"><span class="pre">fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xdim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itermax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initzonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cyclic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gridfill/gridfill.html#fill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gridfill.fill" title="Permalink to this definition"></a></dt>
+<dd><p>Fill missing values in grids with values derived by solving
+Poisson’s equation using a relaxation scheme.</p>
+<p><strong>Arguments:</strong></p>
+<dl class="simple">
+<dt><em>grid</em></dt><dd><p>A masked array with missing values to fill.</p>
+</dd>
+<dt><em>xdim</em>, <em>ydim</em></dt><dd><p>The numbers of the dimensions in <em>grid</em> that represent the
+x-coordinate and y-coordinate respectively.</p>
+</dd>
+<dt><em>eps</em></dt><dd><p>Tolerance for determining the solution complete.</p>
+</dd>
+</dl>
+<p><strong>Keyword arguments:</strong></p>
+<dl class="simple">
+<dt><em>relax</em></dt><dd><p>Relaxation constant. Usually 0.45 &lt;= <em>relax</em> &lt;= 0.6. Defaults to
+0.6.</p>
+</dd>
+<dt><em>itermax</em></dt><dd><p>Maximum number of iterations of the relaxation scheme. Defaults
+to 100 iterations.</p>
+</dd>
+<dt><em>initzonal</em></dt><dd><p>If <em>False</em> missing values will be initialized to zero, if <em>True</em>
+missing values will be initialized to the zonal mean. Defaults
+to <em>False</em>.</p>
+</dd>
+<dt><em>cyclic</em></dt><dd><p>Set to <em>False</em> if the x-coordinate of the grid is not cyclic,
+set to <em>True</em> if it is cyclic. Defaults to <em>False</em>.</p>
+</dd>
+<dt><em>verbose</em></dt><dd><p>If <em>True</em> information about algorithm performance will be
+printed to stdout, if <em>False</em> nothing is printed. Defaults to
+<em>False</em>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gridfill.fill_cube">
+<span class="sig-prename descclassname"><span class="pre">gridfill.</span></span><span class="sig-name descname"><span class="pre">fill_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itermax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initzonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gridfill/gridfill.html#fill_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gridfill.fill_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Fill missing values in a cube with values derived by solving
+Poisson’s equation using a relaxation scheme in the horizontal
+(i.e., x-y-) plane.</p>
+<p><strong>Arguments:</strong></p>
+<dl class="simple">
+<dt><em>cube</em></dt><dd><p>The iris.cube.Cube to be filled</p>
+</dd>
+<dt><em>eps</em></dt><dd><p>Tolerance for determining the solution complete.</p>
+</dd>
+</dl>
+<p><strong>Keyword arguments:</strong></p>
+<dl class="simple">
+<dt><em>relax</em></dt><dd><p>Relaxation constant. Usually 0.45 &lt;= <em>relax</em> &lt;= 0.6. Defaults to
+0.6.</p>
+</dd>
+<dt><em>itermax</em></dt><dd><p>Maximum number of iterations of the relaxation scheme. Defaults
+to 100 iterations.</p>
+</dd>
+<dt><em>initzonal</em></dt><dd><p>If <em>False</em> missing values will be initialized to zero, if <em>True</em>
+missing values will be initialized to the zonal mean. Defaults
+to <em>False</em>.</p>
+</dd>
+<dt><em>full_output</em></dt><dd><p>If <em>True</em> this function returns a tuple (filled_cube,
+not_converged), where not_converged is a boolean array
+indicating slices where the algorithm did not converge.
+Defaults to <em>False</em>.</p>
+</dd>
+<dt><em>verbose</em></dt><dd><p>If <em>True</em> information about algorithm performance will be
+printed to stdout, if <em>False</em> nothing is printed. Defaults to
+<em>False</em>.</p>
+</dd>
+<dt><em>inplace</em></dt><dd><p>If <em>True</em>, modify cube.data in-place; if <em>False</em>, return a
+copy. Defaults to <em>False</em>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Gridfill" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2012-2023, Andrew Dawson.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

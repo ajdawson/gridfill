@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gridfill &mdash; gridfill 1.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gridfill API" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            gridfill
+          </a>
+              <div class="version">
+                1.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfill</span></code> API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">gridfill</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Gridfill</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="toctree-wrapper compound">
+</div>
+<section id="gridfill">
+<h1>Gridfill<a class="headerlink" href="#gridfill" title="Permalink to this heading"></a></h1>
+<p>Gridfill is a Python package for filling in missing values in gridded data.
+Missing values are filled by solving Poisson’s equation using an iterative relaxation scheme at the missing values, resulting in a smooth filling.</p>
+<p>The core package runs on Python 3, on Linux and OSX (maybe on Windows too), and requires <a class="reference external" href="https://numpy.org">numpy</a>.
+Gridfill has an optional interface for working with <a class="reference external" href="https://scitools-iris.readthedocs.io/en/stable/">iris</a> cubes.</p>
+<section id="how-to-install">
+<h2>How to Install<a class="headerlink" href="#how-to-install" title="Permalink to this heading"></a></h2>
+<p>The easiest way to install is using the <a class="reference external" href="https://docs.conda.io/en/latest/">conda</a> package manager:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">gridfill</span>
+</pre></div>
+</div>
+<p>If you want to install from source you will need to have <a class="reference external" href="https://setuptools.pypa.io/en/latest/">setuptools</a>, <a class="reference external" href="https://cython.org">cython</a>, and <a class="reference external" href="https://numpy.org">numpy</a> installed before you start.
+Once you have the dependencies installation should be as simple as entering the gridfill source directory and doing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h2>
+<p>Gridfill has one core function <a class="reference internal" href="api.html#gridfill.fill" title="gridfill.fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfill.fill</span></code></a>.
+This function accepts a masked array array as input, as well as some parameters that control the numerical scheme, and returns a 2-tuple consisting of the filled in array and some convergence information:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gridfill</span>
+
+<span class="c1"># Fill an array where the y-dimension is first and the x-dimension is</span>
+<span class="c1"># second, with the x-dimension being cyclic, using a tolerance of 0.01</span>
+<span class="c1"># (tolerance depends on your data values, choose appropriately):</span>
+<span class="n">filled_array</span><span class="p">,</span> <span class="n">converged</span> <span class="o">=</span> <span class="n">gridfill</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">masked_array</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">cyclic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you are working with <a class="reference external" href="https://scitools-iris.readthedocs.io/en/latest/generated/api/iris.cube.html#iris.cube.Cube" title="(in Iris v3.8.0.dev28)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a> objects then the convenient <a class="reference internal" href="api.html#gridfill.fill_cube" title="gridfill.fill_cube"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridfill.fill_cube</span></code></a> function is probably the tool for the job:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gridfill</span>
+
+<span class="c1"># With a Cube as input we don&#39;t need to give dimension numbers:</span>
+<span class="n">filled_cube</span> <span class="o">=</span> <span class="n">gridfill</span><span class="o">.</span><span class="n">fill_cube</span><span class="p">(</span><span class="n">cube_with_missing</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">cyclic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="development-and-contributing">
+<h2>Development and Contributing<a class="headerlink" href="#development-and-contributing" title="Permalink to this heading"></a></h2>
+<p>Development is done through <a class="reference external" href="https://github.com/ajdawson/gridfill">Github</a>.
+Bug reports and feature requests should be made using the repository <a class="reference external" href="https://github.com/ajdawson/gridfill/issues">issues</a> page.
+Pull requests for new features and bug fixes are welcome!</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.html" class="btn btn-neutral float-right" title="gridfill API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2012-2023, Andrew Dawson.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
