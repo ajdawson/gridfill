@@ -25,7 +25,7 @@ from .gridfill import fill, fill_cube
 try:
     from ._version import __version__
 except ImportError:
-    __version__ == "unknown"
+    __version__ = "unknown"
 
 # Define the objects to be imported by imports of the form:
 #   from gridfill import *
