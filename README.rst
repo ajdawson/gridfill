@@ -33,6 +33,22 @@ gridfill can also operate on `iris` cubes, which requires the iris_
 package to be installed.
 
 
-.. _conda: http://conda.pydata.org
+Developers
+----------
+
+For development the pytest package is required in order to run tests. In order
+to run all tests you should also install iris_.
+
+Tests can be run in-place but you must first compile the extension module::
+
+    python setup.py build_ext --inplace
+    python -m pytest
+
+Tests can also be run against the installed version::
+
+    python -m pytest --pyargs gridfill.tests
+
+
+.. _conda: https://docs.conda.io/en/latest/
 .. _Github: https://github.com/ajdawson/gridfill
-.. _iris: http://scitools.org.uk/iris
+.. _iris: https://scitools-iris.readthedocs.io/en/stable/

@@ -20,7 +20,7 @@
 # THE SOFTWARE.
 import os
 
-from nose.tools import raises
+import pytest
 import numpy as np
 import numpy.ma as ma
 
@@ -72,12 +72,17 @@ class GridFillTest(object):
                          cyclic=self.cyclic, verbose=False)
         self.assert_array_almost_equal(filled, self.soln)
 
-    @raises(TypeError)
     def test_not_masked(self):
-        filled, c = fill(self.grid.filled(fill_value=np.nan), self.eps,
-                         relax=self.relax, itermax=self.itermax,
-                         initzonal=self.initzonal, cyclic=self.cyclic,
-                         verbose=False)
+        with pytest.raises(TypeError):
+            fill(
+                self.grid.filled(fill_value=np.nan),
+                self.eps,
+                relax=self.relax,
+                itermax=self.itermax,
+                initzonal=self.initzonal,
+                cyclic=self.cyclic,
+                verbose=False,
+            )
 
     def assert_array_almost_equal(self, a, b):
         np.testing.assert_array_almost_equal(a, b)

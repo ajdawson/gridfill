@@ -21,3 +21,4 @@ dist
 ## Ignore build output
 gridfill/_gridfill.c
 *.so
+gridfill/_version.py
