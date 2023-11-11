@@ -64,8 +64,8 @@ def _recover_data(grid, info):
     return grid
 
 
-def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
-         cyclic=False, verbose=False):
+def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False, initzonal_linear=False,
+         cyclic=False, initial_value=0.0, verbose=False):
     """
     Fill missing values in grids with values derived by solving
     Poisson's equation using a relaxation scheme.
@@ -97,6 +97,11 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
         missing values will be initialized to the zonal mean. Defaults
         to *False*.
 
+    *initzonal_linear*
+        If *False* missing values will be initialized to zero, if *True*
+        missing values will be initialized to the zonal mean. Defaults
+        to *False*.
+
     *cyclic*
         Set to *False* if the x-coordinate of the grid is not cyclic,
         set to *True* if it is cyclic. Defaults to *False*.
@@ -119,7 +124,9 @@ def fill(grids, xdim, ydim, eps, relax=.6, itermax=100, initzonal=False,
     # Call the computation subroutine:
     niter, resmax = _poisson_fill_grids(grids, masks, relax, eps, itermax,
                                         1 if cyclic else 0,
-                                        1 if initzonal else 0)
+                                        1 if initzonal else 0,
+                                        1 if initzonal_linear else 0,
+                                        initial_value)
     grids = _recover_data(grids, info)
     converged = np.logical_not(resmax > eps)
     # optional performance information:
